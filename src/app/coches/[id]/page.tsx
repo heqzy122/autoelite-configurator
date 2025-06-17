@@ -1,4 +1,3 @@
-// src/app/coches/[id]/page.tsx
 import { listaDeCoches } from "@/data/coches";
 import CocheDetailView from "@/components/CocheDetailView";
 
@@ -10,6 +9,7 @@ export async function generateStaticParams() {
 
 type Props = {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export default function CocheDetallePage({ params }: Props) {

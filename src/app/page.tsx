@@ -1,6 +1,4 @@
-// src/app/page.tsx
 "use client"; 
-
 import { listaDeCoches } from "@/data/coches"; 
 import Link from "next/link";
 import Image from "next/image";
@@ -17,9 +15,7 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [sortOption, setSortOption] = useState('default');
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  useEffect(() => { setIsClient(true); }, []);
 
   const filteredCars = listaDeCoches.filter(coche => {
     if (!searchTerm) return true;
@@ -31,16 +27,11 @@ export default function Home() {
 
   const sortedAndFilteredCars = [...filteredCars].sort((a, b) => {
     switch (sortOption) {
-      case 'price_asc':
-        return parseValue(a.precio) - parseValue(b.precio);
-      case 'price_desc':
-        return parseValue(b.precio) - parseValue(a.precio);
-      case 'power_desc':
-        return parseValue(b.potencia) - parseValue(a.potencia);
-      case 'power_asc':
-        return parseValue(a.potencia) - parseValue(b.potencia);
-      default:
-        return a.id - b.id;
+      case 'price_asc': return parseValue(a.precio) - parseValue(b.precio);
+      case 'price_desc': return parseValue(b.precio) - parseValue(a.precio);
+      case 'power_desc': return parseValue(b.potencia) - parseValue(a.potencia);
+      case 'power_asc': return parseValue(a.potencia) - parseValue(b.potencia);
+      default: return a.id - b.id;
     }
   });
 
@@ -48,9 +39,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center p-8 bg-gray-50 text-gray-800">
       <div className="text-center mb-8">
         <h1 className="text-5xl font-bold">AutoElite</h1>
-        <p className="text-lg text-gray-600 mt-2">
-          Elige hasta 6 coches para ver su ficha y compararlos
-        </p>
+        <p className="text-lg text-gray-600 mt-2">Elige hasta 6 coches para ver su ficha y compararlos</p>
       </div>
       <div className="w-full max-w-7xl flex justify-end mb-6">
         <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" >
@@ -78,9 +67,7 @@ export default function Home() {
                 <button onClick={() => toggleCarSelection(coche)} className={`mt-4 w-full text-white py-2 rounded-lg transition-colors ${ isSelected ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700" }`} >
                   {isSelected ? "Quitar de la comparación" : "Añadir para comparar"}
                 </button>
-                <Link href={`/coches/${coche.id}`} className="text-center mt-2 text-blue-500 hover:underline text-sm">
-                  Ver ficha completa
-                </Link>
+                <Link href={`/coches/${coche.id}`} className="text-center mt-2 text-blue-500 hover:underline text-sm">Ver ficha completa</Link>
               </div>
             </div>
           );
