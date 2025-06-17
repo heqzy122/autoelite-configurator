@@ -52,13 +52,8 @@ export default function Home() {
           Elige hasta 6 coches para ver su ficha y compararlos
         </p>
       </div>
-
       <div className="w-full max-w-7xl flex justify-end mb-6">
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
+        <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" >
           <option value="default">Orden por defecto</option>
           <option value="price_asc">Precio: de menor a mayor</option>
           <option value="price_desc">Precio: de mayor a menor</option>
@@ -66,7 +61,6 @@ export default function Home() {
           <option value="power_asc">Potencia: de menor a mayor</option>
         </select>
       </div>
-
       <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {sortedAndFilteredCars.map((coche) => {
           const isSelected = isClient ? selectedCars.some(c => c.id === coche.id) : false;
@@ -74,13 +68,7 @@ export default function Home() {
             <div key={coche.id} className="border rounded-lg shadow-lg bg-white overflow-hidden flex flex-col">
               <Link href={`/coches/${coche.id}`}>
                 <div className="relative w-full h-48 cursor-pointer">
-                  <Image
-                    src={coche.imagen}
-                    alt={`Foto de ${coche.marca} ${coche.modelo}`}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    priority={coche.id <= 4}
-                  />
+                  <Image src={coche.imagen} alt={`Foto de ${coche.marca} ${coche.modelo}`} fill style={{ objectFit: 'cover' }} priority={coche.id <= 4}/>
                 </div>
               </Link>
               <div className="p-4 flex flex-col flex-grow">

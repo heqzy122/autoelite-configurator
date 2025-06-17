@@ -1,5 +1,4 @@
 // src/app/marca/[nombreMarca]/page.tsx
-
 import { listaDeCoches } from "@/data/coches";
 import Link from "next/link";
 import MarcaGrid from "@/components/MarcaGrid";
@@ -11,17 +10,13 @@ export async function generateStaticParams() {
   }));
 }
 
-// --- TIPO DE PROPS CORREGIDO ---
 type Props = {
   params: { nombreMarca: string };
-  searchParams: { [key: string]: string | string[] | undefined };
 };
-// ------------------------------
 
 export default function MarcaPage({ params }: Props) {
   const marca = decodeURIComponent(params.nombreMarca);
   const cochesDeLaMarca = listaDeCoches.filter(coche => coche.marca === marca);
-
   return (
     <main className="flex min-h-screen flex-col items-center p-8 bg-gray-50 text-gray-800">
       <div className="text-center mb-12">
