@@ -4,21 +4,19 @@ import { listaDeCoches } from "@/data/coches";
 import Link from "next/link";
 import MarcaGrid from "@/components/MarcaGrid";
 
-// --- ¡NUEVA FUNCIÓN! ---
-// Le decimos a Next.js todas las páginas de marca que debe construir
 export async function generateStaticParams() {
-  // Creamos una lista de marcas únicas sin repeticiones
   const marcas = [...new Set(listaDeCoches.map(coche => coche.marca))];
-  
   return marcas.map((marca) => ({
     nombreMarca: marca,
   }));
 }
-// --------------------
 
+// --- TIPO DE PROPS CORREGIDO ---
 type Props = {
   params: { nombreMarca: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
+// ------------------------------
 
 export default function MarcaPage({ params }: Props) {
   const marca = decodeURIComponent(params.nombreMarca);

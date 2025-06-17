@@ -3,18 +3,18 @@
 import { listaDeCoches } from "@/data/coches";
 import CocheDetailView from "@/components/CocheDetailView";
 
-// --- ¡NUEVA FUNCIÓN! ---
-// Le decimos a Next.js todas las páginas de coche que debe construir
 export async function generateStaticParams() {
   return listaDeCoches.map((coche) => ({
     id: coche.id.toString(),
   }));
 }
-// --------------------
 
+// --- TIPO DE PROPS CORREGIDO ---
 type Props = {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
+// ------------------------------
 
 export default function CocheDetallePage({ params }: Props) {
   const coche = listaDeCoches.find((c) => c.id.toString() === params.id);
