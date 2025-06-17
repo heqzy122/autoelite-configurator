@@ -3,12 +3,18 @@ import { listaDeCoches } from "@/data/coches";
 import Link from "next/link";
 import Image from "next/image";
 
+// Definimos el tipo de las props explícitamente
+type Props = {
+  params: { id: string };
+};
+
 function getCoche(id: string) {
   const coche = listaDeCoches.find((c) => c.id.toString() === id);
   return coche;
 }
 
-export default function CocheDetallePage({ params }: { params: { id: string } }) {
+// Usamos el tipo 'Props' que hemos definido
+export default function CocheDetallePage({ params }: Props) {
   const coche = getCoche(params.id);
   if (!coche) { return <div>Coche no encontrado</div>; }
   const { fichaTecnica } = coche;

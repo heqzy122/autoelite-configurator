@@ -3,7 +3,13 @@ import { listaDeCoches } from "@/data/coches";
 import Link from "next/link";
 import MarcaGrid from "@/components/MarcaGrid";
 
-export default function MarcaPage({ params }: { params: { nombreMarca: string } }) {
+// Definimos el tipo de las props explícitamente
+type Props = {
+  params: { nombreMarca: string };
+};
+
+// Usamos el tipo 'Props' que hemos definido
+export default function MarcaPage({ params }: Props) {
   const marca = decodeURIComponent(params.nombreMarca);
   const cochesDeLaMarca = listaDeCoches.filter(coche => coche.marca === marca);
 
