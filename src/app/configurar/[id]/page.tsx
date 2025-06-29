@@ -5,40 +5,47 @@ import { notFound } from 'next/navigation';
 import ConfiguradorUI from "@/components/ConfiguradorUI";
 import { Modelo, Motorizacion, Color } from "@/types";
 
-export async function generateStaticParams() {
-  const { data: modelos } = await supabase.from('modelos').select('id');
-  if (!modelos) return [];
-  return modelos.map((modelo) => ({ id: modelo.id.toString() }));
+// ✅ Tipado para el componente de página
+interface PageProps {
+  params: { id: string };
 }
 
-type Props = {
-  params: { id: string };
-};
+// Componente que carga los datos
+async function ConfiguratorLoader({ modeloId }: { modeloId: number }) {
+  const [modeloRes, motorizacionesRes, coloresRes] = await Promise.all([
+    supabase.from('modelos').select('*').eq('id', modeloId).single(),
+    supabase.from('motorizaciones').select('*').eq('modelo_id', modeloId).order('sobrecoste_precio'),
+    supabase.from('modelos_colores').select('colores(*)').eq('modelo_id', modeloId)
+  ]);
 
-export default async function ConfigurarPage({ params }: Props) {
-  const modeloId = parseInt(params.id);
+  const { data: modelo, error: modeloError } = modeloRes;
+  const { data: motorizaciones, error: motorizacionesError } = motorizacionesRes;
+  const { data: coloresData, error: coloresError } = coloresRes;
 
-  const { data: modelo } = await supabase.from('modelos').select('*').eq('id', modeloId).single();
-  if (!modelo) notFound();
+  if (modeloError || !modelo) {
+    notFound();
+  }
 
-  const { data: motorizaciones } = await supabase.from('motorizaciones').select('*').eq('modelo_id', modeloId).order('sobrecoste_precio');
-  
-  const { data: coloresData } = await supabase
-    .from('modelos_colores')
-    .select(`colores (id, nombre_color, codigo_hex, sobrecoste_color)`) // <-- Petición simple
-    .eq('modelo_id', modeloId);
-    
-  const coloresDisponibles = coloresData ? coloresData.map((item: any) => item.colores).filter(Boolean) : [];
+  const coloresDisponibles: Color[] = coloresData 
+    ? coloresData.map((item: any) => item.colores).filter(Boolean) as Color[]
+    : [];
 
-  if (!motorizaciones || !coloresDisponibles) {
-    return <div>Error al cargar las opciones.</div>;
+  if (motorizacionesError || coloresError || !motorizaciones) {
+    return <div className="text-center text-red-500 p-8">Error al cargar las opciones de configuración.</div>;
   }
 
   return (
     <ConfiguradorUI 
       modelo={modelo} 
       motorizaciones={motorizaciones}
-      colores={coloresDisponibles as Color[]}
+      colores={coloresDisponibles}
     />
   );
+}
+
+// ✅ Página principal con tipado correcto
+export default function ConfigurarPage({ params }: PageProps) {
+  const modeloId = parseInt(params.id, 10);
+
+  return <ConfiguratorLoader modeloId={modeloId} />;
 }
