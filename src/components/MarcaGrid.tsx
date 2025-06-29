@@ -44,9 +44,9 @@ export default function MarcaGrid({ cars }: { cars: Car[] }) {
             <motion.div 
               key={coche.id} 
               className="border border-gray-700 rounded-lg shadow-md bg-gray-800 overflow-hidden flex flex-col"
-              initial={{ opacity: 0, y: 50 }} 
+              initial={{ opacity: 0, y: 30 }} 
               animate={{ opacity: 1, y: 0 }}   
-              transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.08 }} 
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: index * 0.07 }} 
               viewport={{ once: true, amount: 0.8 }} 
             >
               <Link href={`/coches/${coche.id}`}>

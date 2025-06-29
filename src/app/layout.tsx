@@ -24,7 +24,7 @@ export default function RootLayout({
     // El ClerkProvider ahora envuelve el contenido DENTRO del body
     <ClerkProvider >
       <html lang="es" className="h-full">
-        <body className={`${inter.className} flex flex-col min-h-full bg-gray-900`}>
+        <body className={`${inter.className} flex flex-col min-h-screen bg-gray-900`}>
             <Toaster 
               position="top-center"
               toastOptions={{

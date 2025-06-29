@@ -1,17 +1,17 @@
 // tailwind.config.ts
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss"
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/app/**/*.{ts,tsx,js,jsx}",
+    "./src/components/**/*.{ts,tsx,js,jsx}",
   ],
   theme: {
     extend: {
-      // Asegúrate de que keyframes y animation NO estén aquí, deben haber sido eliminados
+      // Aquí puedes extender colores, fuentes, etc.
     },
   },
   plugins: [],
 }
+
 export default config
