@@ -5,6 +5,21 @@ import { notFound } from 'next/navigation';
 import ConfiguradorUI from "@/components/ConfiguradorUI";
 import { Modelo, Motorizacion, Color } from "@/types";
 
+// ¡NUEVA FUNCIÓN! Le dice a Next.js qué páginas debe construir
+export async function generateStaticParams() {
+  const { data: modelos, error } = await supabase.from('modelos').select('id');
+
+  // Si hay un error o no hay modelos, no construye ninguna página
+  if (error || !modelos) {
+    return [];
+  }
+
+  // Devuelve una lista de todos los IDs posibles para la URL
+  return modelos.map((modelo) => ({
+    id: modelo.id.toString(),
+  }));
+}
+
 type Props = {
   params: { id: string };
 };
@@ -28,20 +43,14 @@ export default async function ConfigurarPage({ params }: Props) {
     .eq('modelo_id', modeloId)
     .order('sobrecoste_precio', { ascending: true });
 
-  // Pedimos solo los datos de color, SIN la ruta de la imagen
   const { data: coloresData, error: coloresError } = await supabase
     .from('modelos_colores')
-    .select(`
-      colores (
-        id,
-        nombre_color,
-        codigo_hex,
-        sobrecoste_color
-      )
-    `)
+    .select(`colores (id, nombre_color, codigo_hex, sobrecoste_color)`)
     .eq('modelo_id', modeloId);
     
-  const coloresDisponibles = coloresData ? coloresData.map((item: any) => item.colores).filter(Boolean) : [];
+  const coloresDisponibles: Color[] = coloresData 
+    ? coloresData.map((item: any) => item.colores).filter(Boolean) as Color[]
+    : [];
 
   if (motorizacionesError || coloresError || !motorizaciones) {
     return <div>Error al cargar las opciones de configuración.</div>;
@@ -49,9 +58,9 @@ export default async function ConfigurarPage({ params }: Props) {
 
   return (
     <ConfiguradorUI 
-      modelo={modelo as Modelo} 
-      motorizaciones={motorizaciones as Motorizacion[]}
-      colores={coloresDisponibles as Color[]}
+      modelo={modelo} 
+      motorizaciones={motorizaciones}
+      colores={coloresDisponibles}
     />
   );
 }
