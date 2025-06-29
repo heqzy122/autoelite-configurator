@@ -1,5 +1,3 @@
-// src/app/marca/[nombreMarca]/page.tsx
-
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,6 +19,7 @@ const logoMap: { [key: string]: string } = {
   Volkswagen: "/logos/vw.png",
 };
 
+// Para SSG (build-time generation)
 export async function generateStaticParams() {
   const { data, error } = await supabase.from("modelos").select("marca");
   if (error || !data) return [];
@@ -28,7 +27,8 @@ export async function generateStaticParams() {
   return marcas.map((marca) => ({ nombreMarca: marca }));
 }
 
-export default async function MarcaPage({
+// Esta es la firma que Next.js espera:
+export default async function Page({
   params,
 }: {
   params: { nombreMarca: string };
@@ -71,12 +71,12 @@ export default async function MarcaPage({
           <Link
             key={mod.id}
             href={`/configurar/${mod.id}`}
-            className="
+            className={`
               group border border-gray-700 rounded-lg shadow-md
               bg-gray-800 overflow-hidden flex flex-col
               hover:border-green-500 transition-all duration-300
               fade-in-up
-            "
+            `}
             style={{ animationDelay: `${i * 100}ms` }}
           >
             <div className="relative w-full h-48">
