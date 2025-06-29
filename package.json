@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.50.0",
+    "@clerk/nextjs": "^6.23.1",
+    "@supabase/supabase-js": "^2.50.2",
+    "framer-motion": "^12.18.1",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

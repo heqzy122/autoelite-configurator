@@ -1,28 +1,46 @@
 // src/app/layout.tsx
-
+    
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header"; // 1. IMPORTAMOS EL HEADER
-
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { ClerkProvider } from '@clerk/nextjs';
+import { Toaster } from 'react-hot-toast';
+    
 const inter = Inter({ subsets: ["latin"] });
-
+    
 export const metadata: Metadata = {
   title: "AutoElite Comparador",
-  description: "Compara coches de forma fácil y elegante",
+  description: "Configura y compara los coches de tus sueños.",
 };
-
+    
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={inter.className}>
-        <Header /> {/* 2. AÑADIMOS EL HEADER AQUÍ */}
-        {children}
-      </body>
-    </html>
+    // El ClerkProvider ahora envuelve el contenido DENTRO del body
+    <ClerkProvider >
+      <html lang="es" className="h-full">
+        <body className={`${inter.className} flex flex-col min-h-full bg-gray-900`}>
+            <Toaster 
+              position="top-center"
+              toastOptions={{
+                style: {
+                  background: '#333',
+                  color: '#fff',
+                },
+              }}
+            />
+            <Header />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
