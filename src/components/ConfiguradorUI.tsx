@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { useCompareStore } from '@/store/compareStore';
 import { Car, Modelo, Motorizacion, Color } from '@/types';
@@ -98,8 +98,7 @@ export default function ConfiguradorUI({ modelo, motorizaciones, colores }: Prop
               <h1 className="text-4xl font-extrabold text-white mb-2">{modelo.marca} {modelo.nombre_modelo}</h1>
               <p className="text-xl text-green-400 font-semibold">{selectedEngine?.nombre_motor}</p>
               
-              {/* CAMBIO AQUÍ: Altura responsiva */}
-              <div className="relative w-full h-45 lg:h-80 rounded-lg overflow-hidden shadow-2xl mt-4">
+              <div className="relative w-full h-52 lg:h-80 rounded-lg overflow-hidden shadow-2xl mt-4">
                 <Image src={modelo.imagen_base} alt={`Imagen de ${modelo.marca} ${modelo.nombre_modelo}`} fill style={{ objectFit: 'cover' }} priority />
                 <div 
                   className="absolute inset-0 transition-colors duration-300" 
@@ -139,7 +138,7 @@ export default function ConfiguradorUI({ modelo, motorizaciones, colores }: Prop
               <div className="mb-8">
                 <h2 className="text-3xl font-bold border-b-2 border-gray-700 pb-2 mb-4">Motor</h2>
                 <div className="flex flex-col gap-3">
-                  {motorizaciones.map(engine => (
+                  {motorizaciones?.map(engine => (
                     <button key={engine.id} onClick={() => setSelectedEngine(engine)} className={`p-4 rounded-lg text-left transition-all duration-200 border-2 ${selectedEngine?.id === engine.id ? 'bg-green-800/50 border-green-500' : 'bg-gray-800 border-transparent hover:border-gray-600'}`}>
                       <p className="font-bold text-lg">{engine.nombre_motor}</p>
                       <p className="text-sm text-gray-300">{engine.potencia}</p>
@@ -152,7 +151,7 @@ export default function ConfiguradorUI({ modelo, motorizaciones, colores }: Prop
               <div className="mb-8">
                 <h2 className="text-3xl font-bold border-b-2 border-gray-700 pb-2 mb-4">Pintura</h2>
                 <div className="flex flex-wrap gap-4">
-                  {colores.map(color => (
+                  {colores?.map(color => (
                     <button key={color.id} onClick={() => setSelectedColor(color)} className={`w-28 text-center transition-all ${selectedColor?.id === color.id ? 'font-bold' : ''}`}>
                       <div className="w-16 h-16 rounded-full mx-auto border-4 transition-all" style={{ backgroundColor: color.codigo_hex, borderColor: selectedColor?.id === color.id ? '#10B981' : 'transparent' }}></div>
                       <p className="text-xs mt-2">{color.nombre_color}</p>

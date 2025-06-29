@@ -1,6 +1,5 @@
 // src/types/index.ts
 
-// El tipo para un coche ya configurado (para el comparador)
 export interface Car {
   id: number;
   created_at?: string;
@@ -27,7 +26,6 @@ export interface Car {
   cajaDeCambios: string | null;
 }
 
-// TIPOS PARA EL CONFIGURADOR
 export interface Modelo {
   id: number;
   marca: string;
@@ -44,10 +42,10 @@ export interface Motorizacion {
   [key: string]: any; 
 }
 
+// TIPO COLOR SIMPLIFICADO Y CORRECTO
 export interface Color {
   id: number; 
   nombre_color: string; 
   codigo_hex: string; 
   sobrecoste_color: number;
-  // La propiedad 'ruta_imagen' se ha quitado por ahora
 }
