@@ -1,25 +1,43 @@
-// src/app/marca/[nombreMarca]/page.tsx
-// ────────────────────────────────────────────────
-// Desactiva el chequeo de TypeScript en todo este fichero
+// src/app/configurar/[id]/page.tsx
+// ────────────────────────────────────
+// Desactiva el chequeo de TypeScript en este fichero
 // @ts-nocheck
 
 import { notFound } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
-import MarcaGrid from '@/components/MarcaGrid'
+import ConfiguradorUI from '@/components/ConfiguradorUI'
 
 export default async function Page(props: any) {
-  // Obtenemos la marca de la URL
-  const nombreMarca = props.params.nombreMarca as string
+  const modeloId = parseInt(props.params.id, 10)
+  if (isNaN(modeloId)) notFound()
 
-  // Hacemos la consulta a Supabase
-  const { data: modelosData, error } = await supabase
+  const { data: modeloData } = await supabase
     .from('modelos')
     .select('*')
-    .eq('marca', nombreMarca)
+    .eq('id', modeloId)
+    .single()
+  if (!modeloData) notFound()
 
-  // Si hay error o no devuelve datos, lanzamos 404
-  if (error || !modelosData) notFound()
+  const { data: motorizacionesData } = await supabase
+    .from('motorizaciones')
+    .select('*')
+    .eq('modelo_id', modeloId)
+    .order('sobrecoste_precio')
 
-  // Renderizamos el grid de modelos
-  return <MarcaGrid modelos={modelosData} />
+  const { data: coloresRaw } = await supabase
+    .from('modelos_colores')
+    .select('colores(*)')
+    .eq('modelo_id', modeloId)
+
+  const modelo: any = modeloData
+  const motorizaciones: any[] = motorizacionesData ?? []
+  const colores: any[] = (coloresRaw ?? []).flatMap((r: any) => r.colores ?? [])
+
+  return (
+    <ConfiguradorUI
+      modelo={modelo}
+      motorizaciones={motorizaciones}
+      colores={colores}
+    />
+  )
 }
