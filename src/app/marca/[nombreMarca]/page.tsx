@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,20 +21,14 @@ const logoMap: { [key: string]: string } = {
   Volkswagen: "/logos/vw.png",
 };
 
-// Para SSG (build-time generation)
 export async function generateStaticParams() {
   const { data, error } = await supabase.from("modelos").select("marca");
   if (error || !data) return [];
-  const marcas = Array.from(new Set(data.map((item: any) => item.marca)));
+  const marcas = Array.from(new Set(data.map((item) => item.marca)));
   return marcas.map((marca) => ({ nombreMarca: marca }));
 }
 
-// Esta es la firma que Next.js espera:
-export default async function Page({
-  params,
-}: {
-  params: { nombreMarca: string };
-}) {
+export default async function MarcaPage({ params }) {
   const nombre = decodeURIComponent(params.nombreMarca);
   const logoPath = logoMap[nombre];
 
@@ -68,16 +63,16 @@ export default async function Page({
 
       {/* Grid con fade-in */}
       <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {modelos.map((mod: any, i: number) => (
+        {modelos.map((mod, i) => (
           <Link
             key={mod.id}
             href={`/configurar/${mod.id}`}
-            className={`
+            className="
               group border border-gray-700 rounded-lg shadow-md
               bg-gray-800 overflow-hidden flex flex-col
               hover:border-green-500 transition-all duration-300
               fade-in-up
-            `}
+            "
             style={{ animationDelay: `${i * 100}ms` }}
           >
             <div className="relative w-full h-48">
